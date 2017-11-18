@@ -55,6 +55,32 @@ module.exports = {
               publicPath: '../'       // override the default path
             }
           }]
+        },
+        {
+          test: /\.(png|jpg|jpeg)$/,
+          use: [
+              {
+                  loader: 'file-loader',
+                  options: {
+                    name: '[name].[ext]',
+                    outputPath: 'img/',
+                    publicPath: '../'
+                  }
+              }
+          ]
+        },
+        {
+          test: /\.html$/,
+          use: [
+              {
+                  loader: 'html-loader',
+                  options: {
+                      name: '[name].[ext]',
+                      outputPath: './',
+                      publicPath: '../'
+                  }
+              }
+          ]
         }
       ]
     },
