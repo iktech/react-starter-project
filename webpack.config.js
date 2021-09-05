@@ -1,10 +1,10 @@
 const webpack = require('webpack');
 const path = require('path');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+
  
 module.exports = (env) => {
     const isProduction = env === 'production';
-    const CSSExtract = new ExtractTextPlugin('styles.css');
 
     return {
         entry: './src/index.js',
@@ -22,29 +22,12 @@ module.exports = (env) => {
                 },
                 {
                     test: /\.s?css$/,
-                    use: CSSExtract.extract({
-                        fallback: 'style-loader',
-                        use: [
-                            {
-                                loader: 'css-loader',
-                                options: {
-                                    sourceMap: true
-                                }
-                            },
-                            {
-                                loader: 'postcss-loader',
-                                options: {
-                                    sourceMap: true
-                                }
-                            },
-                            {
-                                loader: 'sass-loader',
-                                options: {
-                                    sourceMap: true
-                                }
-                            },
-                        ]
-                    })
+                    use: [
+                        MiniCssExtractPlugin.loader,
+                        "css-loader",
+                        "postcss-loader",
+                        "sass-loader",
+                    ]
                 },
                 {
                     test: /\.(png|jpg|jpeg)$/,
@@ -73,12 +56,12 @@ module.exports = (env) => {
             ]
         },
         plugins: [
-            CSSExtract
+            new MiniCssExtractPlugin()
         ],
         // devtool: isProduction ? 'source-map' : 'cheap-module-eval-source-map',
         devtool: isProduction ? 'source-map' : 'inline-source-map',
         devServer: {
-            contentBase: path.join(__dirname, 'public'),
+            static: path.join(__dirname, 'public'),
             historyApiFallback: true
         }
     }
